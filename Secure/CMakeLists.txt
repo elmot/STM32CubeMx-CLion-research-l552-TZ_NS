@@ -23,14 +23,10 @@ message("Build type: " ${CMAKE_BUILD_TYPE})
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 # Compiler options
-set(STM32_MCU_FLAGS  "-mcpu=cortex-m33 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mcmse " )
+set(STM32_MCU_FLAGS  -mcpu=cortex-m33 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mcmse )
 
 #Linker options
 set(STM32_LINKER_SCRIPT STM32L552xE_FLASH_s.ld)
-set(STM32_LINKER_OPTION  -Wl,--cmse-implib\ -Wl,--out-implib="${CMAKE_SOURCE_DIR}/../Secure_nsclib/secure_nsclib.o")
-
-# Include toolchain file
-include("../gcc-arm-none-eabi.cmake")
 
 # Set the project name
 set(CMAKE_PROJECT_NAME l552-TZ_S)
@@ -39,7 +35,14 @@ project(${CMAKE_PROJECT_NAME})
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
 
-# Include mx-generated 
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE ${STM32_MCU_FLAGS} )
+
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE ${STM32_MCU_FLAGS})
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE -Wl,--cmse-implib -Wl,--out-implib=${CMAKE_CURRENT_SOURCE_DIR}/../Secure_nsclib/secure_nsclib.o)
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE -T "${CMAKE_CURRENT_SOURCE_DIR}/${STM32_LINKER_SCRIPT}")
+target_link_options(${CMAKE_PROJECT_NAME} PRIVATE -Wl,-Map=${CMAKE_PROJECT_NAME}.map -Wl,--gc-sections)
+
+# Include mx-generated
 include("mx-generated.cmake")
 
 # Enable CMake support for ASM and C languages
