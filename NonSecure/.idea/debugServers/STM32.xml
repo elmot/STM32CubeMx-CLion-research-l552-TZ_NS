@@ -1,0 +1,14 @@
+<component name="DebugServers">
+  <generic-debug-target name="STM32" uniqueID="a1c7503c-6f3d-4f7e-81a5-67829549dc9b" selected="true">
+    <debugger version="1">
+      <debugger kind="GDB" isBundled="true" />
+      <env />
+    </debugger>
+    <gdbserver exe="C:\ST\STM32CubeCLT_1.16.0\STLink-gdb-server\bin\ST-LINK_gdbserver.exe" args="-p 32274 -cp &quot;C:\ST\STM32CubeCLT_1.16.0\STM32CubeProgrammer\bin&quot; --frequency 24000 --swd -t">
+      <env script="" />
+    </gdbserver>
+    <console port="4444" />
+    <target reset-command="monitor reset hardware" reset-before="false" />
+    <connection extended-remote="false" remote-string="tcp::32274" />
+  </generic-debug-target>
+</component>
